@@ -1,0 +1,11 @@
+<!doctype html>
+<title>VulnBank — Dashboard</title>
+<h1>Welcome, {{ g.user.username }}</h1>
+<p>Balance: {{ balance }}</p>
+<h2>Your invoices</h2>
+<ul>
+  {% for inv in invoices %}
+  <li>#{{ inv.id }} — {{ inv.description }} ({{ inv.amount }})</li>
+  {% endfor %}
+</ul>
+<p><a href="{{ url_for('auth.logout') }}">Log out</a></p>

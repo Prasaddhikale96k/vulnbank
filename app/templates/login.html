@@ -1,0 +1,11 @@
+<!doctype html>
+<title>VulnBank — Login</title>
+<h1>VulnBank</h1>
+{% with messages = get_flashed_messages() %}
+{% if messages %}<ul>{% for m in messages %}<li>{{ m }}</li>{% endfor %}</ul>{% endif %}
+{% endwith %}
+<form method="post">
+  <input name="username" placeholder="Username" autocomplete="username">
+  <input name="password" type="password" placeholder="Password" autocomplete="current-password">
+  <button type="submit">Log in</button>
+</form>
