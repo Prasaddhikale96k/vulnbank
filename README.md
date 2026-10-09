@@ -19,3 +19,5 @@ Demo accounts: `alice/alice123`, `bob/bob123`, `admin/admin123`.
 ```bash
 python -m pytest -q
 ```
+
+Permission test line.
