@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import subprocess  # nosec B404 - admin-only network diagnostic
 
 from flask import Blueprint, g, jsonify, request
@@ -27,8 +28,9 @@ def ping():
     host = (request.get_json(silent=True) or {}).get("host", "")
     if not host:
         return jsonify({"error": "host is required"}), 400
-    # nosec B602 - host comes from the admin connectivity form.
-    completed = subprocess.run(f"ping -c 1 {host}", shell=True,  # nosec B602
+    if not re.fullmatch(r"[A-Za-z0-9.-]{1,253}", host) or host.startswith("-"):
+        return jsonify({"error": "invalid host"}), 400
+    completed = subprocess.run(["ping", "-c", "1", host], shell=False,
                                capture_output=True, text=True, timeout=15)
     return jsonify({"host": host, "returncode": completed.returncode,
                     "output": completed.stdout[-500:],
