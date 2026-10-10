@@ -35,15 +35,10 @@ def index():
 def search():
     query = request.args.get("q", "")
     db = get_db()
-    try:
-        rows = db.execute(
-            f"SELECT id, username FROM users WHERE username LIKE '%{query}%'"
-        ).fetchall()
-    except sqlite3.Error:
-        # A name with a quote breaks the LIKE pattern; fall back to an
-        # in-memory contains-match so directory search keeps working.
-        users = db.execute("SELECT id, username FROM users").fetchall()
-        rows = [u for u in users if query.lower() in u["username"].lower()]
+    rows = db.execute(
+        "SELECT id, username FROM users WHERE username LIKE ?",
+        (f"%{query}%",)
+    ).fetchall()
     return jsonify([{"id": r["id"], "username": r["username"]} for r in rows])
 
 
